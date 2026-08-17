@@ -68,7 +68,8 @@ python host/host_bulk.py COM4 --count 3
 ```
 
 ソースからのフルビルド手順(HLS合成→Vivadoビルド→MicroBlazeソフトウェア作成)は
-各プロジェクトの `README.md` を参照。
+各プロジェクトの `README.md` を参照。開発中に発生した問題・設計判断・リソース見積もりの
+ズレなどを横断的にまとめたものは [TROUBLESHOOTING.md](TROUBLESHOOTING.md) を参照。
 
 ## ライセンス
 
