@@ -1,9 +1,12 @@
 # NTT-based Polynomial Multiplication Accelerator on Nexys A7-100T
 
-FHE(準同型暗号)/OpenFHEで使われる負巡回NTT(数論変換)ベースの多項式乗算を、
+CKKS(近似準同型暗号)の実装比較・高速化研究を動機に、CKKS/BFV/BGVといったRNSベースの
+FHE(準同型暗号)方式が共通して使う負巡回NTT(数論変換)ベースの多項式乗算を、
 Digilent Nexys A7-100T (Xilinx/AMD `xc7a100tcsg324-1`) 上に実装したFPGAアクセラレータ群。
 MicroBlaze SoC + Vitis HLSで生成したNTTコアをAXIで接続し、PCからUSB-UART経由で
-多項式係数を送ると、FPGA上で乗算した結果を送り返す。
+多項式係数を送ると、FPGA上で乗算した結果を送り返す。CKKS固有の演算(エンコード・
+リスケーリング・近似演算など)は実装しておらず、あくまでスキーム非依存のNTT多項式乗算
+コアのみを対象としている。
 
 いずれのプロジェクトも実機(Nexys A7-100T)で、ビットストリーム書き込み・MicroBlazeファームウェア
 ダウンロード・Pythonホストスクリプトからの送受信を通しで確認済み(2026-08-17)。ビルド済み

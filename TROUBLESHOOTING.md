@@ -145,7 +145,7 @@ Debug Module自体にもマッチしてしまうため、`{name =~ "MicroBlaze #
 ### 2.4 Windows MAX_PATH(260バイト)制限
 
 Vitisが生成するBSP/ドメイン/アプリのビルド成果物パスは非常に深くなりやすく、
-このリポジトリのように長いディレクトリ名(`ntt-fhe-fpga-accelerator\projects\...`)
+このリポジトリのように長いディレクトリ名(`ckks-ntt-fpga-accelerator\projects\...`)
 の下でビルドすると260文字制限に抵触しやすい。`create_project.tcl`の`ip_repo`や
 `create_platform.py`/`create_app.py`の`PROJ_ROOT`は、`subst W: <対象プロジェクトへの
 絶対パス>`で短いドライブレターにマッピングしてから実行することを前提にしている
