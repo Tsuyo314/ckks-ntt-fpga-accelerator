@@ -1,0 +1,28 @@
+# Vivado / Vitis 生成物 (create_project.tcl / run_hls.tcl 等で再生成可能)
+*.gen/
+*.cache/
+*.runs/
+*.sim/
+*.hw/
+*.ip_user_files/
+*.xpr.backup*
+.Xil/
+*.jou
+*.log
+*.str
+*.wdb
+*.dcp
+*.pb
+solution1/
+*_csim/
+
+# Vitis ワークスペース(create_platform.py / create_app.py で再生成)
+software/workspace/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
