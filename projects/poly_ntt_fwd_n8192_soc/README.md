@@ -19,6 +19,11 @@ poly_ntt_inv_n8192_soc  (逆変換 Ĉ → C, CRT復元, 期待値と比較)
 中間結果は `../../lib/generated/pipeline_n8192/` 配下のJSONファイルでプロジェクト間を受け渡す
 (`host_*.py` が自動生成)。開発時の問題と対処は [TROUBLESHOOTING.md](TROUBLESHOOTING.md) を参照。
 
+同梱のパラメータはCRTチャネル数(60ビット素数の個数)**L=2**。この基板でのチャネル数の
+実用上の限度と理由(BRAM使用率98.5%、増やすほど処理時間が線形に増える)は
+[poly_mul_ntt_crt_n8192_soc/README.md の「チャネル数(L, 素数の個数)について」](../poly_mul_ntt_crt_n8192_soc/README.md#チャネル数l-素数の個数について)
+を参照。
+
 ## 必要なもの
 
 - Digilent Nexys A7-100T (xc7a100tcsg324-1)

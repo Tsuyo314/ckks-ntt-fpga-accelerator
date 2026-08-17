@@ -30,6 +30,13 @@ MicroBlaze SoC + Vitis HLSで生成したNTTコアをAXIで接続し、PCからU
 `poly_ntt_fwd/pw/inv_n8192_soc` の3つは互いに連携して動く3段パイプライン(それぞれ別ビットストリームを
 順に書き込んで実行する)。詳細な実行手順は各プロジェクトの `README.md` を参照。
 
+CRT/RNS版(`poly_mul_ntt_crt_n8192_soc` および `poly_ntt_fwd/pw/inv_n8192_soc`)は
+同梱パラメータでチャネル数(60ビット素数の個数)**L=2**。この基板ではBRAM使用率が
+1チャネル分だけで98.5%に達しており、チャネル数を増やすほど処理時間も線形に伸びるため、
+実用上はL=2〜3程度が限度になる。詳細は
+[`poly_mul_ntt_crt_n8192_soc/README.md`](projects/poly_mul_ntt_crt_n8192_soc/README.md#チャネル数l-素数の個数について)
+を参照。
+
 ## 共通のアーキテクチャ
 
 ```
