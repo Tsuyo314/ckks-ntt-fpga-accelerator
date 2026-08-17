@@ -18,8 +18,12 @@ Gentleman-Sande型の逆NTTで通常領域へ戻し、チャネル分の結果�
 
 ## 単体での実行
 
+ビットストリームの書き込みだけではMicroBlazeにプログラムが載っていないため応答が返らない。
+ELFのダウンロードも必須(実機検証済み: fwd→pw→invを通しで実行し最終結果 `[OK]` を確認済み)。
+
 ```
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source low_level\scripts\program_device.tcl -tclargs low_level\bitstream\design_1_wrapper.bit"
+cmd.exe /c "C:\AMDDesignTools\2025.2\Vitis\bin\xsct.bat software\scripts\download_and_run.tcl software\elf\poly_ntt_inv_app.elf"
 python host/host_inv.py COM4
 ```
 
@@ -30,5 +34,5 @@ python host/host_inv.py COM4
 
 ## ソースからフルビルドする場合
 
-`poly_mul_ntt_openfhe_n8192_soc/README.md` と同じ手順。HLSトップは `high_level/src/poly_ntt_inv.cpp`、
-Vivadoプロジェクト名は `inv8192`。
+[poly_mul_ntt_openfhe_n8192_soc/README.md](../poly_mul_ntt_openfhe_n8192_soc/README.md) と同じ手順。
+HLSトップは `high_level/src/poly_ntt_inv.cpp`、Vivadoプロジェクト名は `inv8192`。

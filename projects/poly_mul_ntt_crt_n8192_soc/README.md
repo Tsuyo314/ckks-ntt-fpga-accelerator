@@ -13,13 +13,19 @@
 - AMD Vivado / Vitis HLS 2025.2
 - Python 3.8+ (`pip install -r ../../requirements.txt`)
 
-## クイックスタート(ビルド済みビットストリームを使う場合)
+## クイックスタート(ビルド済みビットストリーム+ファームウェアを使う場合)
+
+ビットストリームの書き込みだけではMicroBlazeにプログラムが載っていないため応答が返らない。
+`software/elf/poly_mul_crt_n8192_app.elf`(MicroBlaze側ファームウェア)のダウンロードも必須(実機検証済み)。
 
 ```
-# 1. ボードをUSB接続してJTAG経由で書き込み (Windows/cmd.exe)
+# 1. ボードをUSB接続してビットストリームを書き込み (Windows/cmd.exe)
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source low_level\scripts\program_device.tcl -tclargs low_level\bitstream\design_1_wrapper.bit"
 
-# 2. PCから多項式係数を送って乗算結果を受け取る (要 pyserial)
+# 2. MicroBlazeにファームウェア(ELF)をダウンロードして実行
+cmd.exe /c "C:\AMDDesignTools\2025.2\Vitis\bin\xsct.bat software\scripts\download_and_run.tcl software\elf\poly_mul_crt_n8192_app.elf"
+
+# 3. PCから多項式係数を送って乗算結果を受け取る (要 pyserial)
 python host/host_crt.py COM4 --count 3
 ```
 
@@ -36,6 +42,6 @@ FPGA側のHLSコアのBRAM予算の都合上、モジュラス・回転因子テ
 
 ## ソースからフルビルドする場合
 
-`poly_mul_ntt_openfhe_n8192_soc/README.md` と同じ手順(HLS合成→Vivadoビルド→書き込み→
-MicroBlazeソフトウェア作成→実行)。HLSトップは `high_level/src/poly_mul_ntt.cpp`、
-Vivadoプロジェクト名は `crt8192`。
+[poly_mul_ntt_openfhe_n8192_soc/README.md](../poly_mul_ntt_openfhe_n8192_soc/README.md) と同じ手順
+(HLS合成→Vivadoビルド→書き込み→ `vitis.bat -s` でのMicroBlazeソフトウェア作成→実行)。
+HLSトップは `high_level/src/poly_mul_ntt.cpp`、Vivadoプロジェクト名は `crt8192`。

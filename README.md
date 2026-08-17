@@ -5,9 +5,10 @@ Digilent Nexys A7-100T (Xilinx/AMD `xc7a100tcsg324-1`) 上に実装したFPGAア
 MicroBlaze SoC + Vitis HLSで生成したNTTコアをAXIで接続し、PCからUSB-UART経由で
 多項式係数を送ると、FPGA上で乗算した結果を送り返す。
 
-いずれのプロジェクトも実機(Nexys A7-100T)でビットストリーム書き込み・Pythonホストスクリプトからの
-送受信を確認済みで、ビルド済みビットストリーム(`low_level/bitstream/*.bit`)を同梱しているため、
-Vivado/Vitisでのリビルドなしにそのまま書き込んで試すことができる。
+いずれのプロジェクトも実機(Nexys A7-100T)で、ビットストリーム書き込み・MicroBlazeファームウェア
+ダウンロード・Pythonホストスクリプトからの送受信を通しで確認済み(2026-08-17)。ビルド済み
+ビットストリーム(`low_level/bitstream/*.bit`)とMicroBlazeファームウェア(`software/elf/*.elf`)を
+同梱しているため、Vivado/Vitisでのリビルドなしにそのまま書き込んで試すことができる。
 
 ## 必要なもの
 
@@ -51,7 +52,10 @@ cd projects/poly_mul_ntt_openfhe_n8192_soc
 # 1. ボードをUSB接続してビルド済みビットストリームを書き込み (Windows/cmd.exe)
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source low_level\scripts\program_device.tcl -tclargs low_level\bitstream\design_1_wrapper.bit"
 
-# 2. PCから多項式係数を送って乗算結果を受け取る
+# 2. MicroBlazeにファームウェア(ELF)をダウンロードして実行
+cmd.exe /c "C:\AMDDesignTools\2025.2\Vitis\bin\xsct.bat software\scripts\download_and_run.tcl software\elf\poly_mul_openfhe_n8192_app.elf"
+
+# 3. PCから多項式係数を送って乗算結果を受け取る
 pip install -r ../../requirements.txt
 python host/host_bulk.py COM4 --count 3
 ```

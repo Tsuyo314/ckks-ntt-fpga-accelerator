@@ -17,7 +17,10 @@ solution1/
 *_csim/
 
 # Vitis ワークスペース(create_platform.py / create_app.py で再生成)
-software/workspace/
+**/software/workspace/
+
+# 3段パイプラインの中間出力(host_fwd.py 等が実行のたびに生成)
+**/lib/generated/pipeline_n8192/
 
 # Python
 __pycache__/

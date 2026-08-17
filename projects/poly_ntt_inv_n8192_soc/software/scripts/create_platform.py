@@ -6,7 +6,7 @@ import vitis
 # Windows MAX_PATH(260バイト)対策: subst で短いドライブレターにマッピングして実行する
 # (`subst W: <REPO_ROOT>\projects\poly_ntt_inv_n8192_soc`)。
 PROJ_ROOT = "W:"
-XSA = PROJ_ROOT + "/low_level/inv8192.runs/impl_1/design_1_wrapper.xsa"
+XSA = PROJ_ROOT + "/low_level/bitstream/design_1_wrapper.xsa"
 WORKSPACE = PROJ_ROOT + "/software/workspace"
 PLATFORM_NAME = "inv8192_platform"
 DOMAIN_NAME = "standalone_domain"

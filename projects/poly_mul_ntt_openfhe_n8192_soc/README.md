@@ -12,15 +12,21 @@ MicroBlaze SoC + Vitis HLSアクセラレータ + USB-UARTでPCと通信し、�
 - AMD Vivado / Vitis HLS 2025.2
 - Python 3.8+ (`pip install -r ../../requirements.txt`)
 
-## クイックスタート(ビルド済みビットストリームを使う場合)
+## クイックスタート(ビルド済みビットストリーム+ファームウェアを使う場合)
 
-リビルド不要で試すだけなら、同梱の `low_level/bitstream/design_1_wrapper.bit` を書き込むだけでよい。
+リビルド不要で試すだけなら、同梱の `low_level/bitstream/design_1_wrapper.bit`(FPGA側)と
+`software/elf/poly_mul_openfhe_n8192_app.elf`(MicroBlaze側ファームウェア)を書き込むだけでよい。
+**ビットストリームの書き込みだけではMicroBlazeにプログラムが載っていないため応答が返らない。
+ELFのダウンロードも必須**(実機検証済み)。
 
 ```
-# 1. ボードをUSB接続してJTAG経由で書き込み (Windows/cmd.exe)
+# 1. ボードをUSB接続してビットストリームを書き込み (Windows/cmd.exe)
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source low_level\scripts\program_device.tcl -tclargs low_level\bitstream\design_1_wrapper.bit"
 
-# 2. PCから多項式係数を送って乗算結果を受け取る (要 pyserial)
+# 2. MicroBlazeにファームウェア(ELF)をダウンロードして実行
+cmd.exe /c "C:\AMDDesignTools\2025.2\Vitis\bin\xsct.bat software\scripts\download_and_run.tcl software\elf\poly_mul_openfhe_n8192_app.elf"
+
+# 3. PCから多項式係数を送って乗算結果を受け取る (要 pyserial)
 python host/host_bulk.py COM4 --count 3
 ```
 
@@ -39,9 +45,11 @@ cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source l
 # 3. 書き込み (ビルド直後は引数省略で低レベルの .runs 配下のビットストリームを使う)
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat -mode batch -source low_level\scripts\program_device.tcl"
 
-# 4. MicroBlaze用ソフトウェア(プラットフォーム/アプリ)を作成・書き込み
-python software\scripts\create_platform.py
-python software\scripts\create_app.py
+# 4. MicroBlaze用ソフトウェア(プラットフォーム/アプリ)を作成
+#    (create_platform.py/create_app.py は `vitis` Python APIを使うため、通常の python ではなく
+#     vitis.bat -s 経由で実行する。同じセッションで先に chcp 65001 が必要 — 文字コードエラー対策)
+cmd.exe /c "chcp 65001 && C:\AMDDesignTools\2025.2\Vitis\bin\vitis.bat -s software\scripts\create_platform.py"
+cmd.exe /c "chcp 65001 && C:\AMDDesignTools\2025.2\Vitis\bin\vitis.bat -s software\scripts\create_app.py"
 cmd.exe /c "C:\AMDDesignTools\2025.2\Vitis\bin\xsct.bat software\scripts\download_and_run.tcl"
 
 # 5. ホストスクリプトで送受信テスト
@@ -51,3 +59,11 @@ python host/host_bulk.py COM4 --count 3
 Windows の MAX_PATH(260バイト)制限で `create_project.tcl` の IP登録に失敗する場合は、
 `low_level` を `subst` で短いドライブレターにマッピングしてから実行するか、
 スクリプト内の `ip_repo` を自環境の絶対パスに直接書き換える(詳細はスクリプト内コメント参照)。
+`create_platform.py`/`create_app.py` も同様の理由でプロジェクトルートを
+`subst W: <このプロジェクトへの絶対パス>` してから `W:\software\scripts\...` として実行する
+(スクリプト内 `PROJ_ROOT = "W:"` 参照)。
+
+`create_app.py` が `Cannot set workspace ... already in use` で失敗する場合、
+直前の `create_platform.py`/`create_app.py` 実行が残した Vitis Server (`RigelApp`,
+`java.exe` プロセス) がワークスペースをロックしたままになっている。該当プロセスを終了し、
+`software/workspace/_ide/.wsdata/.lock` を削除してから再実行する。

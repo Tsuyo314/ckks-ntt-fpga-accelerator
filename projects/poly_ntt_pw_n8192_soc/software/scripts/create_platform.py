@@ -7,7 +7,7 @@ import vitis
 # 超えて失敗するため、プロジェクトルートを subst で短いドライブレターにマッピングして
 # 実行する (`subst W: <REPO_ROOT>\projects\poly_ntt_pw_n8192_soc`)。
 PROJ_ROOT = "W:"
-XSA = PROJ_ROOT + "/low_level/pw8192.runs/impl_1/design_1_wrapper.xsa"
+XSA = PROJ_ROOT + "/low_level/bitstream/design_1_wrapper.xsa"
 WORKSPACE = PROJ_ROOT + "/software/workspace"
 PLATFORM_NAME = "pw8192_platform"  # Windows MAX_PATH(260)対策で短縮
 DOMAIN_NAME = "standalone_domain"
