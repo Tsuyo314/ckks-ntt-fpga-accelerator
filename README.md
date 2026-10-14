@@ -1,5 +1,8 @@
 # NTT-based Polynomial Multiplication Accelerator on Nexys A7-100T
 
+*誤りを含んでいる可能性があるため、使用する場合は注意をお願いします。
+
+## 概要
 CKKS(近似準同型暗号)の実装比較・高速化研究を動機に、CKKS/BFV/BGVといったRNSベースの
 FHE(準同型暗号)方式が共通して使う負巡回NTT(数論変換)ベースの多項式乗算を、
 Digilent Nexys A7-100T (Xilinx/AMD `xc7a100tcsg324-1`) 上に実装したFPGAアクセラレータ群。
